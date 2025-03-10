@@ -12,6 +12,7 @@ function RootLayout() {
                 options={{
                     title: "Active Workout",
                     headerTitleAlign: "center",
+                    headerBackButtonDisplayMode: "minimal",
                     headerRight: () => (
                         <Pressable
                             style={{ justifyContent: "center", alignItems: "flex-end" }}
