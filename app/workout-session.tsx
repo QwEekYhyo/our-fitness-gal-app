@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
 
 import KoolButton from "@/components/KoolButton";
+import OnGoingExercise from "@/components/OnGoingExercise";
 
 interface TextWithValueProps {
     text: string;
@@ -33,6 +34,9 @@ function WorkoutSession() {
                 <TextWithValue text="Sets" value={3} />
                 <TextWithValue text="Volume" value={1280} unit="kg" />
             </View>
+
+            <OnGoingExercise exerciseName="Bench Press" />
+
             <View style={{ gap: 10, marginTop: 40 }}>
                 <KoolButton title="Add exercise" theme="blue" />
                 <KoolButton title="Cancel" theme="red" />
