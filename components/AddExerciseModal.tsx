@@ -1,12 +1,45 @@
-import { iosBlue } from "@/utils/constants";
+import { useState } from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
+
+import { iosBlue } from "@/utils/constants";
+import SearchBar from "./SearchBar";
 
 export interface AddExerciseModalProps {
     visible: boolean;
     setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const componentStyle = StyleSheet.create({
+function AddExerciseModal(props: AddExerciseModalProps): React.ReactNode {
+    const [searchValue, setSearchValue] = useState("");
+
+    return (
+        <Modal
+            animationType="slide"
+            visible={props.visible}
+            presentationStyle="formSheet"
+            onRequestClose={() => props.setVisible(false)}
+        >
+            <View style={styles.header}>
+                <Text style={styles.text} onPress={() => props.setVisible(false)}>
+                    Cancel
+                </Text>
+                <Text style={{ color: "black", fontSize: 20 }}>Add exercise</Text>
+                <Text style={[{ fontWeight: 500 }, styles.text]}> Add </Text>
+            </View>
+            <View style={styles.main}>
+                <SearchBar
+                    placeholder="Search exercise"
+                    value={searchValue}
+                    onChangeText={(text) => setSearchValue(text)}
+                    onCancel={() => setSearchValue("")}
+                />
+                <Text>This is a test for now</Text>
+            </View>
+        </Modal>
+    );
+}
+
+const styles = StyleSheet.create({
     header: {
         backgroundColor: "white",
         paddingHorizontal: 20,
@@ -21,30 +54,11 @@ const componentStyle = StyleSheet.create({
         color: iosBlue,
     },
     main: {
+        paddingTop: 5,
         backgroundColor: "#F2F1F6",
         height: "100%",
+        flexDirection: "column",
     },
 });
-
-function AddExerciseModal(props: AddExerciseModalProps): React.ReactNode {
-    return (
-        <Modal
-            animationType="slide"
-            visible={props.visible}
-            presentationStyle="formSheet"
-            onRequestClose={() => props.setVisible(false)}
-        >
-            <View style={componentStyle.header}>
-                <Text style={componentStyle.text} onPress={() => props.setVisible(false)}>
-                    Cancel
-                </Text>
-                <Text style={[{ fontWeight: 500 }, componentStyle.text]}>Add</Text>
-            </View>
-            <View style={componentStyle.main}>
-                <Text>This is a test for now</Text>
-            </View>
-        </Modal>
-    );
-}
 
 export default AddExerciseModal;

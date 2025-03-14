@@ -25,33 +25,35 @@ function TextWithValue({ text, value, unit }: TextWithValueProps): React.ReactNo
 function WorkoutSession() {
     const [addExModalVisible, setAddExModalVisible] = useState(false);
     return (
-        <ScrollView contentContainerStyle={{ alignItems: "center", paddingVertical: 20 }}>
-            <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    width: "90%",
-                    margin: "auto",
-                }}
-            >
-                <TextWithValue text="Sets" value={3} />
-                <TextWithValue text="Volume" value={1280} unit="kg" />
-            </View>
-
-            <OnGoingExercise exerciseName="Bench Press" />
-
+        <>
             <AddExerciseModal visible={addExModalVisible} setVisible={setAddExModalVisible} />
-            <View style={{ gap: 10, marginTop: 40 }}>
-                <KoolButton
-                    title="Add exercise"
-                    theme="blue"
-                    onPress={() => {
-                        setAddExModalVisible(true);
+            <ScrollView contentContainerStyle={{ alignItems: "center", paddingVertical: 20 }}>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        width: "90%",
+                        margin: "auto",
                     }}
-                />
-                <KoolButton title="Cancel" theme="red" />
-            </View>
-        </ScrollView>
+                >
+                    <TextWithValue text="Sets" value={3} />
+                    <TextWithValue text="Volume" value={1280} unit="kg" />
+                </View>
+
+                <OnGoingExercise exerciseName="Bench Press" />
+
+                <View style={{ gap: 10, marginTop: 40 }}>
+                    <KoolButton
+                        title="Add exercise"
+                        theme="blue"
+                        onPress={() => {
+                            setAddExModalVisible(true);
+                        }}
+                    />
+                    <KoolButton title="Cancel" theme="red" />
+                </View>
+            </ScrollView>
+        </>
     );
 }
 
