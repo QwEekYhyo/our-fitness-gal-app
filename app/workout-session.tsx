@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
+import { useNavigation } from "expo-router";
 
 import KoolButton from "@/components/KoolButton";
 import OnGoingExercise from "@/components/OnGoingExercise";
@@ -23,7 +24,23 @@ function TextWithValue({ text, value, unit }: TextWithValueProps): React.ReactNo
 }
 
 function WorkoutSession() {
+    const navigation = useNavigation();
+
     const [addExModalVisible, setAddExModalVisible] = useState(false);
+
+    const cancelWorkoutAlert = () =>
+        Alert.alert(
+            "Cancel Workout",
+            "Are you sure you want to cancel your workout? This will delete all entered sets.",
+            [
+                {
+                    text: "No",
+                    style: "cancel",
+                },
+                { text: "Yes", onPress: navigation.goBack },
+            ],
+        );
+
     return (
         <>
             <AddExerciseModal visible={addExModalVisible} setVisible={setAddExModalVisible} />
@@ -50,7 +67,7 @@ function WorkoutSession() {
                             setAddExModalVisible(true);
                         }}
                     />
-                    <KoolButton title="Cancel" theme="red" />
+                    <KoolButton title="Cancel" theme="red" onPress={cancelWorkoutAlert} />
                 </View>
             </ScrollView>
         </>
