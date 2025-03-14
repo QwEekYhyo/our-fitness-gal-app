@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 
 import KoolButton from "@/components/KoolButton";
 import OnGoingExercise from "@/components/OnGoingExercise";
+import AddExerciseModal from "@/components/AddExerciseModal";
 
 interface TextWithValueProps {
     text: string;
@@ -21,6 +23,7 @@ function TextWithValue({ text, value, unit }: TextWithValueProps): React.ReactNo
 }
 
 function WorkoutSession() {
+    const [addExModalVisible, setAddExModalVisible] = useState(false);
     return (
         <ScrollView contentContainerStyle={{ alignItems: "center", paddingVertical: 20 }}>
             <View
@@ -37,8 +40,15 @@ function WorkoutSession() {
 
             <OnGoingExercise exerciseName="Bench Press" />
 
+            <AddExerciseModal visible={addExModalVisible} setVisible={setAddExModalVisible} />
             <View style={{ gap: 10, marginTop: 40 }}>
-                <KoolButton title="Add exercise" theme="blue" />
+                <KoolButton
+                    title="Add exercise"
+                    theme="blue"
+                    onPress={() => {
+                        setAddExModalVisible(true);
+                    }}
+                />
                 <KoolButton title="Cancel" theme="red" />
             </View>
         </ScrollView>

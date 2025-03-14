@@ -1,13 +1,13 @@
-import { Pressable, Text, ViewStyle } from "react-native";
+import { Pressable, PressableProps, Text, ViewStyle } from "react-native";
 
 import { shadeColor } from "@/utils/color-utils";
+import { iosBlue } from "@/utils/constants";
 
 export type KoolButtonTheme = "blue" | "neutral" | "red";
 
-export interface KoolButtonProps {
+export interface KoolButtonProps extends PressableProps {
     title: string;
     theme?: KoolButtonTheme;
-    onPress?: () => void;
 }
 
 const getThemedTextColor = (theme: KoolButtonTheme): string => {
@@ -33,7 +33,7 @@ const getThemedColor = (theme: KoolButtonTheme, pressed: boolean): string => {
 
     switch (theme) {
         case "blue":
-            color = "#007aff";
+            color = iosBlue;
             if (pressed) color = shadeColor(color, 25);
             break;
         case "neutral":
@@ -46,8 +46,8 @@ const getThemedColor = (theme: KoolButtonTheme, pressed: boolean): string => {
     return color;
 };
 
-function KoolButton(props: KoolButtonProps): React.ReactNode {
-    const theme = props.theme ?? "neutral";
+function KoolButton({ title, theme, ...props }: KoolButtonProps): React.ReactNode {
+    const buttonTheme = theme ?? "neutral";
     const commonStyles: ViewStyle = {
         borderRadius: 5,
         justifyContent: "center",
@@ -63,20 +63,21 @@ function KoolButton(props: KoolButtonProps): React.ReactNode {
         <Pressable
             style={({ pressed }) => [
                 {
-                    backgroundColor: getThemedColor(theme, pressed),
+                    backgroundColor: getThemedColor(buttonTheme, pressed),
                 },
                 commonStyles,
             ]}
+            {...props}
         >
             <Text
                 style={{
-                    color: getThemedTextColor(theme),
+                    color: getThemedTextColor(buttonTheme),
                     fontSize: 18,
                     fontWeight: 500,
                     textAlign: "center",
                 }}
             >
-                {props.title}
+                {title}
             </Text>
         </Pressable>
     );
