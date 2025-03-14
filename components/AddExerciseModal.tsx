@@ -8,6 +8,7 @@ import ExerciseWidget from "./ExerciseWidget";
 export interface AddExerciseModalProps {
     visible: boolean;
     setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    setChoosenExercises: (exs: string[]) => void;
 }
 
 const testExercises = [
@@ -53,8 +54,21 @@ function AddExerciseModal(props: AddExerciseModalProps): React.ReactNode {
                     >
                         <Text style={styles.headerText}>Cancel</Text>
                     </TouchableOpacity>
+
                     <Text style={{ color: "black", fontSize: 20 }}>Add exercise</Text>
-                    <Text style={[{ fontWeight: 500 }, styles.headerText]}> Add </Text>
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            props.setVisible(false);
+                            props.setChoosenExercises(
+                                selectedExercises.map((id) => testExercises[id]),
+                            );
+                            setSelectedExercises([]);
+                        }}
+                        activeOpacity={0.4}
+                    >
+                        <Text style={[{ fontWeight: 500 }, styles.headerText]}> Add </Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.main}>
                     <SearchBar

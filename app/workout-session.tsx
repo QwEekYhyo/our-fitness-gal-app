@@ -27,6 +27,7 @@ function WorkoutSession() {
     const navigation = useNavigation();
 
     const [addExModalVisible, setAddExModalVisible] = useState(false);
+    const [activeExercises, setActiveExercises] = useState<string[]>([]);
 
     const cancelWorkoutAlert = () =>
         Alert.alert(
@@ -43,8 +44,16 @@ function WorkoutSession() {
 
     return (
         <>
-            <AddExerciseModal visible={addExModalVisible} setVisible={setAddExModalVisible} />
-            <ScrollView contentContainerStyle={{ alignItems: "center", paddingVertical: 20 }}>
+            <AddExerciseModal
+                visible={addExModalVisible}
+                setVisible={setAddExModalVisible}
+                setChoosenExercises={(exs) =>
+                    setActiveExercises((prevActiveExercises) => [...prevActiveExercises, ...exs])
+                }
+            />
+            <ScrollView
+                contentContainerStyle={{ alignItems: "center", paddingTop: 20, paddingBottom: 100 }}
+            >
                 <View
                     style={{
                         flexDirection: "row",
@@ -57,7 +66,9 @@ function WorkoutSession() {
                     <TextWithValue text="Volume" value={1280} unit="kg" />
                 </View>
 
-                <OnGoingExercise exerciseName="Bench Press" />
+                {activeExercises.map((exName, index) => (
+                    <OnGoingExercise exerciseName={exName} key={index} />
+                ))}
 
                 <View style={{ gap: 10, marginTop: 40 }}>
                     <KoolButton
