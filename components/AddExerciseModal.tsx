@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
 
 import { iosBlue } from "@/utils/constants";
-import SearchBar from "./SearchBar";
+import SearchBar, { SearchBarScreen } from "./SearchBar";
 
 export interface AddExerciseModalProps {
     visible: boolean;
@@ -19,22 +19,24 @@ function AddExerciseModal(props: AddExerciseModalProps): React.ReactNode {
             presentationStyle="formSheet"
             onRequestClose={() => props.setVisible(false)}
         >
-            <View style={styles.header}>
-                <Text style={styles.text} onPress={() => props.setVisible(false)}>
-                    Cancel
-                </Text>
-                <Text style={{ color: "black", fontSize: 20 }}>Add exercise</Text>
-                <Text style={[{ fontWeight: 500 }, styles.text]}> Add </Text>
-            </View>
-            <View style={styles.main}>
-                <SearchBar
-                    placeholder="Search exercise"
-                    value={searchValue}
-                    onChangeText={(text) => setSearchValue(text)}
-                    onCancel={() => setSearchValue("")}
-                />
-                <Text>This is a test for now</Text>
-            </View>
+            <SearchBarScreen>
+                <View style={styles.header}>
+                    <Text style={styles.text} onPress={() => props.setVisible(false)}>
+                        Cancel
+                    </Text>
+                    <Text style={{ color: "black", fontSize: 20 }}>Add exercise</Text>
+                    <Text style={[{ fontWeight: 500 }, styles.text]}> Add </Text>
+                </View>
+                <View style={styles.main}>
+                    <SearchBar
+                        placeholder="Search exercise"
+                        value={searchValue}
+                        onChangeText={(text) => setSearchValue(text)}
+                        onCancel={() => setSearchValue("")}
+                    />
+                    <Text>This is a test for now</Text>
+                </View>
+            </SearchBarScreen>
         </Modal>
     );
 }

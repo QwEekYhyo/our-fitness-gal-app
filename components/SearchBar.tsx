@@ -1,12 +1,39 @@
-import React from "react";
-import { View, TextInput, StyleSheet, TextInputProps } from "react-native";
+import {
+    View,
+    TextInput,
+    StyleSheet,
+    TextInputProps,
+    TouchableOpacity,
+    Keyboard,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView,
+    Platform,
+} from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 export interface SearchBarProps extends TextInputProps {
     onCancel?: () => void;
 }
 
+export function SearchBarScreen({ children }: { children: React.ReactNode }) {
+    return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={{ flex: 1 }}>{children}</View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+    );
+}
+
 function SearchBar({ style, onCancel, ...props }: SearchBarProps): React.ReactNode {
+    const handleCancel = () => {
+        Keyboard.dismiss();
+        if (onCancel) onCancel();
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.searchContainer}>
@@ -20,13 +47,19 @@ function SearchBar({ style, onCancel, ...props }: SearchBarProps): React.ReactNo
                     autoCorrect={false}
                 />
 
-                <AntDesign
-                    name="closecircle"
-                    size={20}
-                    color="grey"
-                    onPress={onCancel}
-                    style={styles.cancelIcon}
-                />
+                <TouchableOpacity
+                    onPress={handleCancel}
+                    style={styles.cancelButton}
+                    activeOpacity={0.7}
+                    hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
+                >
+                    <AntDesign
+                        name="closecircle"
+                        size={20}
+                        color="grey"
+                        style={styles.cancelIcon}
+                    />
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -55,8 +88,12 @@ const styles = StyleSheet.create({
         height: "100%",
         paddingVertical: 0,
     },
+    cancelButton: {
+        padding: 4,
+        zIndex: 10,
+    },
     cancelIcon: {
-        marginLeft: 6,
+        marginLeft: 2,
     },
 });
 
