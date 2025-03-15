@@ -3,8 +3,14 @@ import { Text, TextInput, TextInputProps, TextProps, View } from "react-native";
 
 import { onGoingExerciseStyle as componentStyle } from "@/styles/OnGoingExercise";
 
+export interface ExerciseTotals {
+    sets: number;
+    volume: number;
+}
+
 export interface OnGoingExerciseProps {
     exerciseName: string;
+    setTotals: (totals: ExerciseTotals) => void;
 }
 
 interface CustomTextProps extends TextProps {
@@ -36,6 +42,18 @@ function CustomTextInput({ style, onChangeText, ...props }: TextInputProps) {
 function OnGoingExercise(props: OnGoingExerciseProps): React.ReactNode {
     const [sets, setSets] = useState([{ kg: "", reps: "" }]);
 
+    const computeTotals = (setsState: { kg: string; reps: string }[]) => {
+        const total: ExerciseTotals = { sets: 0, volume: 0 };
+        for (const set of setsState) {
+            if (set.kg === "" || set.reps === "") continue;
+
+            total.volume += parseFloat(set.kg) * parseInt(set.reps);
+            total.sets++;
+        }
+
+        props.setTotals(total);
+    };
+
     const handleInputChange = (index: number, field: "kg" | "reps", value: string) => {
         const updatedSets = [...sets];
         updatedSets[index] = { ...updatedSets[index], [field]: value };
@@ -53,6 +71,8 @@ function OnGoingExercise(props: OnGoingExerciseProps): React.ReactNode {
         if (index === sets.length - 1 && updatedSets[index].kg && updatedSets[index].reps) {
             setSets([...updatedSets, { kg: "", reps: "" }]);
         }
+
+        computeTotals(updatedSets);
     };
 
     return (

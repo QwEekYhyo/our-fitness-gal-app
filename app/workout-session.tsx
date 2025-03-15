@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Alert } from "react-native";
 import { useNavigation } from "expo-router";
 
 import KoolButton from "@/components/KoolButton";
-import OnGoingExercise from "@/components/OnGoingExercise";
+import OnGoingExercise, { ExerciseTotals } from "@/components/OnGoingExercise";
 import AddExerciseModal from "@/components/AddExerciseModal";
 
 interface TextWithValueProps {
@@ -28,6 +28,7 @@ function WorkoutSession() {
 
     const [addExModalVisible, setAddExModalVisible] = useState(false);
     const [activeExercises, setActiveExercises] = useState<string[]>([]);
+    const [allTotals, setAllTotals] = useState<ExerciseTotals[]>([]);
 
     const cancelWorkoutAlert = () =>
         Alert.alert(
@@ -62,12 +63,29 @@ function WorkoutSession() {
                         margin: "auto",
                     }}
                 >
-                    <TextWithValue text="Sets" value={3} />
-                    <TextWithValue text="Volume" value={1280} unit="kg" />
+                    <TextWithValue
+                        text="Sets"
+                        value={allTotals.reduce((acc, total) => acc + total.sets, 0)}
+                    />
+                    <TextWithValue
+                        text="Volume"
+                        value={allTotals.reduce((acc, total) => acc + total.volume, 0)}
+                        unit="kg"
+                    />
                 </View>
 
                 {activeExercises.map((exName, index) => (
-                    <OnGoingExercise exerciseName={exName} key={index} />
+                    <OnGoingExercise
+                        exerciseName={exName}
+                        key={index}
+                        setTotals={(totals) => {
+                            setAllTotals((prevTotals) => {
+                                const res = [...prevTotals];
+                                res[index] = totals;
+                                return res;
+                            });
+                        }}
+                    />
                 ))}
 
                 <View style={{ gap: 10, marginTop: 40 }}>
